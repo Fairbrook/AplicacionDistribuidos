@@ -21,3 +21,13 @@ Aplicacion punto de venta para la materia de sistemas distribuidos
   * Ingresar ($POST["username"], $POST["password"]).
   * Registrar ($POST["username"], $POST["password"]).
   * Check ()
+
+### Producto
+* Métodos WS
+  * ???
+
+* Controlador
+  * Lista ().
+  * Eliminar ($GET["id"]).
+  * Añadir ($POST["mod_nombre"], $POST["mod_existencia"], $POST["mod_precio"]).
+  * Modificar ($POST["mod_nombre"], $POST["mod_existencia"], $POST["mod_precio"]).
