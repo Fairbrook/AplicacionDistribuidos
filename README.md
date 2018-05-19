@@ -10,25 +10,34 @@ Aplicacion punto de venta para la materia de sistemas distribuidos
 * Métodos de Controladores
 
 ### Usuario
-* Métodos WS
-  * Ingresar (UsuarioModelo).
-  * SetHash (UsuarioModelo).
-  * RegistrarCuenta (UsuarioModelo).
-  * CheckHash (hash).
-  
-* Controlador
-  * Ingresar ($POST["username"], $POST["password"]).
-  * Registrar ($POST["username"], $POST["password"]).
-  * Check ()
+
+Método WS | _return_
+----------- | ------------
+Ingresar (usuario) | ???
+RegistrarCuenta (usuario) | ???
+CheckHash (hash) | ???
+SetHash (usuario) | ???
+
+Método de Controlador | _return_
+----------- | ------------
+Ingresar ($POST["username"], $POST["password"]) | ???
+Registrar ($POST["username"], $POST["password"]) | ???
+Check ( ) | ???
 
 ### Producto
-* Métodos WS
-  * AgregarProducto (ProductoModelo)
-  * SelectProductoById (id)
-  * EliminarProducto (ProductoModelo)
 
-* Controlador
-  * Lista ().
-  * Eliminar ($GET["id"]).
-  * Agregar ($POST["mod_nombre"], $POST["mod_existencia"], $POST["mod_precio"]).
-  * Modificar ($POST["mod_nombre"], $POST["mod_existencia"], $POST["mod_precio"]).
+Método WS | _return_
+----------- | ------------
+??? | ???
+AgregarProducto (producto) | ???
+EliminarProducto (producto) | ???
+??? | ???
+SelectProductoById (id) | ???
+
+
+Método de Controlador | _return_
+----------- | ------------
+Lista ( ) | ???
+Agregar ($POST["mod_nombre"], $POST["mod_existencia"], $POST["mod_precio"]) | ???
+Eliminar ($GET["id"]) | ???
+Modificar ($POST["mod_nombre"], $POST["mod_existencia"], $POST["mod_precio"]) | ???
