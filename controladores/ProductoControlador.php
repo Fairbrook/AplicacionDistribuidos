@@ -1,6 +1,6 @@
 <?php
 
-    Class ProductoControlador extends DBConexion {
+    Class ProductoControlador extends BaseControlador {
 
         public $result;
         private $tabla = "productos";

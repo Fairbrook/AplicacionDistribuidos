@@ -1,6 +1,6 @@
 <?php
     class BaseControlador {
-        protected $wsdl = "'http://ip_equipo:8080/ws_test/server.php?wsdl';";
+        protected $wsdl = "http://ip_equipo:8080/ws_test/server.php?wsdl";
         protected $soapClient;
 
         protected $availableWSActions;
