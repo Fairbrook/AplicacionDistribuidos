@@ -11,11 +11,10 @@ Aplicacion punto de venta para la materia de sistemas distribuidos
 
 ### Usuario
 * Métodos WS
-  * Ingresar (username, password).
-  * SetHash (key).
-  * SelectUserByUsername (username).
-  * RegistrarCuenta (username, password, key).
-  * CheckHash (key).
+  * Ingresar (UsuarioModelo).
+  * SetHash (UsuarioModelo).
+  * RegistrarCuenta (UsuarioModelo).
+  * CheckHash (hash).
   
 * Controlador
   * Ingresar ($POST["username"], $POST["password"]).
@@ -24,10 +23,12 @@ Aplicacion punto de venta para la materia de sistemas distribuidos
 
 ### Producto
 * Métodos WS
-  * ???
+  * AgregarProducto (ProductoModelo)
+  * SelectProductoById (id)
+  * EliminarProducto (ProductoModelo)
 
 * Controlador
   * Lista ().
   * Eliminar ($GET["id"]).
-  * Añadir ($POST["mod_nombre"], $POST["mod_existencia"], $POST["mod_precio"]).
+  * Agregar ($POST["mod_nombre"], $POST["mod_existencia"], $POST["mod_precio"]).
   * Modificar ($POST["mod_nombre"], $POST["mod_existencia"], $POST["mod_precio"]).

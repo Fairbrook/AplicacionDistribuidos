@@ -42,77 +42,11 @@
             $this->result = $lista;
         }
 
-         public function Eliminar(){
-            if(!$this->start()) {
-                $this->stop();
-                return false;
-            }
+        public function Agregar () {
 
-            $stmt = $this->pdo->prepare(
-                "SELECT * FROM " . $this->tabla . " " .
-                "WHERE " . $this->fields["id"] . " = :id"
-            );
-            $stmt->execute([
-                'id' => $_GET["id"]
-            ]);
-
-            if($stmt->rowCount() == 0):
-                $usuario = new UsuarioModelo();
-                $usuario->username = $_SESSION["usuario"];
-
-                $producto = new ProductoModelo();
-                $producto->id = $_GET["id"];
-                $producto->nombre = "NE";
-                $producto->existencia = -1;
-                $producto->precio = -1;
-
-                $log = new LoggerControlador();
-                $log->IEliminar($usuario, $producto);
+             if($_SERVER["REQUEST_METHOD"]=="POST" && isset($_POST["mod_nombre"]) && isset($_POST["mod_existencia"]) && isset($_POST["mod_precio"])):
                 
-                header("Location: producto.php?c=Producto&a=Lista&e=2");
-                return;
-            endif;
-
-            $this->result = $stmt->fetch();
-            $producto = new ProductoModelo();
-            $producto->id = $this->result->id;
-            $producto->nombre = $this->result->nombre;
-            $producto->existencia = $this->result->existencia;
-            $producto->precio = $this->result->precio;
-
-            $stmt = $this->pdo->prepare(
-                "DELETE FROM ".$this->tabla." ".
-                "WHERE ".$this->fields["id"]." = :id"
-            );
-
-            $stmt->execute([
-                'id' => $_GET["id"]
-            ]);
-
-            $usuario = new UsuarioModelo();
-            $usuario->username = $_SESSION["usuario"];
-            $log = new LoggerControlador();
-            $log->Eliminar($usuario, $producto);
-
-            if($stmt) $this->status = 200;
-            else $this->status = 503;
-
-            $this->stop();
-            
-            header("Location: producto.php?c=Producto&a=Lista");
-
-        }
-
-        public function Agregar(){
-
-            if($_SERVER["REQUEST_METHOD"]=="POST" && isset($_POST["mod_nombre"]) && isset($_POST["mod_existencia"]) && isset($_POST["mod_precio"])):
-
-                if(!$this->start()) {
-                    $this->stop();
-                    return false;
-                }
-
-                $producto = new ProductoModelo();
+                $producto = new ProductoModelo ();
                 $producto->nombre = $_POST["mod_nombre"];
                 $producto->existencia = intval($_POST["mod_existencia"]);
                 $producto->precio = floatval($_POST["mod_precio"]);
@@ -128,39 +62,67 @@
                 if((int)$producto->precio < 0 || (int)$producto->existencia < 0):
                     return false;
                 endif;
-                
-                $stmt = $this->pdo->prepare(
-                    "INSERT INTO ".$this->tabla."
-                    (
-                        ".$this->fields["nombre"].",
-                        ".$this->fields["exist"].",
-                        ".$this->fields["precio"]."
-                    ) VALUES (
-                        :nombre,
-                        :exist,
-                        :precio
-                    )
-                ");
-                
-                $stmt->execute([
-                    'nombre' => $producto->nombre,
-                    'exist' => $producto->existencia,
-                    'precio' => $producto->precio
-                ]);
-                    
-                $producto->id = $this->pdo->lastInsertId();
+
+                $newProducto = $this->soapClient->__soapCall('AgregarProducto', array('producto' => $producto));    
+
+                //Call to logger
+                if ($newProducto == null) {        //Ya existe el producto
+                    $this->result = 3;
+                    return;
+                }
+
+                $producto->id = $newProducto;
+
                 $usuario = new UsuarioModelo();
                 $usuario->username = $_SESSION["usuario"];
 
                 $log = new LoggerControlador();
                 $log->Agregar($usuario, $producto);
-                if($stmt) $this->status = 200;
-                else $this->status = 503;
 
-                $this->stop();
                 header("Location: producto.php?c=Producto&a=Lista");
 
-            endif;
+             endif;
+
+        }
+
+        public function Eliminar() {
+            $idProd = $_GET["id"];
+
+            $checkProducto = $this->soapClient->__soapCall('SelectProductoById', array('id' => $idProd));
+
+            if ($checkProducto == 0) {
+                $usuario = new UsuarioModelo();
+                $usuario->username = $_SESSION["usuario"];
+
+                $producto = new ProductoModelo();
+                $producto->id = $_GET["id"];
+                $producto->nombre = "NE";
+                $producto->existencia = -1;
+                $producto->precio = -1;
+
+                $log = new LoggerControlador();
+                $log->IEliminar($usuario, $producto);
+                
+                header("Location: producto.php?c=Producto&a=Lista&e=2");
+                return;
+            }
+
+            $this->result = $checkProducto;
+            $producto = new ProductoModelo();
+            $producto->id = $this->result->id;
+            $producto->nombre = $this->result->nombre;
+            $producto->existencia = $this->result->existencia;
+            $producto->precio = $this->result->precio;
+
+            $deleteProducto = $this->soapClient->__soapCall('EliminarProducto', array('producto' => $producto));
+
+            $usuario = new UsuarioModelo();
+            $usuario->username = $_SESSION["usuario"];
+
+            $log = new LoggerControlador();
+            $log->Eliminar($usuario, $producto);
+            
+            header("Location: producto.php?c=Producto&a=Lista");
 
         }
 
