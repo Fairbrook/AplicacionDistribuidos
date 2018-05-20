@@ -54,7 +54,7 @@
                 if ($registUser == 3) {        //Ya existe ese nombre de usuario
                     $this->result = 3;
                     return;
-                } else if ($registerUserRes == 1) {                
+                } else if ($registUser == 1) { 
 
                     $_SESSION["usuario"] = $usuario->username;
                     $_SESSION["hash"] = $usuario->hash;                        
@@ -82,6 +82,7 @@
                     return true;
                 }
             else:
+                session_destroy();
                 return true;
             endif;            
         }
