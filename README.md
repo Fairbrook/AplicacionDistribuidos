@@ -4,7 +4,6 @@ Aplicacion punto de venta para la materia de sistemas distribuidos
 ## [Ejemplo nusoap](www.qualityinfosolutions.com/servicio-web-basico-con-nusoap-php/)
 
 
-
 ## Métodos WebService / Controladores
 * Métodos de WebService invocados desde Controladores
 * Métodos de Controladores
@@ -34,11 +33,12 @@ SelectProductoById (id) | 0 --> El producto con determinado "id" no existe; Mode
 EliminarProducto (producto) | null
 ??? | ???
 
-
-
 Método de Controlador | _return_
 ----------- | ------------
 Lista ( ) | ???
 Agregar ($POST["mod_nombre"], $POST["mod_existencia"], $POST["mod_precio"]) | false --> Error al ingresar información; result = 3 --> Ya existe ese producto
 Modificar ($POST["mod_nombre"], $POST["mod_existencia"], $POST["mod_precio"]) | ???
 Eliminar ($GET["id"]) | null
+
+### Logger
+Todos los métodos de WS reciben lo mismo: UsuarioModelo, ProductoModelo; al igual que los métodos del controlador.
