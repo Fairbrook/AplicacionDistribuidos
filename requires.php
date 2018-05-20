@@ -1,5 +1,4 @@
 <?php
-    require_once('./assets/resourses/nusoap-0.9.5/lib/nusoap.php');
     require_once("./database/DBConexion.php");
     require_once("./database/DBLog.php");
 
