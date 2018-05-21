@@ -1,3 +1,4 @@
+
 <?php
 
     Class ProductoControlador extends BaseControlador {
@@ -130,10 +131,7 @@
 
             if($_SERVER["REQUEST_METHOD"]=="POST" && isset($_POST["mod_nombre"]) && isset($_POST["mod_existencia"]) && isset($_POST["mod_precio"])):
 
-                if(!$this->start()):
-                    $this->stop();
-                    return false;
-                endif;
+            
 
                 $producto = new ProductoModelo();
                 $producto->nombre = $_POST["mod_nombre"];
@@ -153,18 +151,11 @@
                     return false;
                 endif;
 
-                $stmt = $this->pdo->prepare(
-                    "SELECT * FROM " . $this->tabla . " " .
-                    "WHERE " . $this->fields["id"] . " = :id"
-                );
+                $checkProducto = $this->soapClient->__soapCall('SelectProductoById', array('id' => $idProd));
 
-                $stmt->execute([
-                    'id' => $producto->id
-                ]);
+                if($checkProducto == 1):
 
-                if($stmt->rowCount() == 1):
-
-                    $res = $stmt->fetch();
+                    $res = $checkProducto
                     $actual = new ProductoModelo();
                     $actual->id = $res->id;
                     $actual->nombre = $res->nombre;
@@ -172,21 +163,9 @@
                     $actual->precio = $res->precio;
 
                     if($actual->id == $_SESSION["producto_id"] && $actual->nombre == $_SESSION["producto_nombre"] && $actual->existencia == $_SESSION["producto_existencia"] && $actual->precio == $_SESSION["producto_precio"]):
-                        $stmt = $this->pdo->prepare(
-                            "UPDATE ".$this->tabla.
-                            " SET ".
-                            $this->fields["nombre"]." = :nombre, ".
-                            $this->fields["exist"]." = :exist, ".
-                            $this->fields["precio"]." = :precio ".
-                            "WHERE ".$this->fields["id"]." = :id"
-                        );
+                       
 
-                        $stmt->execute([
-                            'nombre' => $producto->nombre,
-                            'exist' => $producto->existencia,
-                            'precio' => $producto->precio,
-                            'id' => $producto->id
-                        ]);
+                       	$updateProducto = $this->soapClient->__soapCall('ModificarProducto', array('producto' => $producto));
 
                         $usuario = new UsuarioModelo();
                         $usuario->username = $_SESSION["usuario"];
@@ -223,16 +202,10 @@
 
                     $id = $_GET["id"];
 
-                    $stmt = $this->pdo->prepare(
-                        "SELECT * FROM " . $this->tabla . " " .
-                        "WHERE " . $this->fields["id"] . " = :id"
-                    );
+                    $checkProducto = $this->soapClient->__soapCall('SelectProductoById', array('id' => $idProd));
 
-                    $stmt->execute([
-                        'id' => $id
-                    ]);
-                    if($stmt->rowCount() == 1):
-                        $this->result = $stmt->fetch();
+                    if($checkProducto == 1):
+                        $this->result = $checkProducto;
                         $_SESSION["producto_id"] = $this->result->id;
                         $_SESSION["producto_nombre"] = $this->result->nombre;
                         $_SESSION["producto_existencia"] = $this->result->existencia;
