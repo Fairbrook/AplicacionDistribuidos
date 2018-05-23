@@ -27,11 +27,11 @@ Check ( ) | false --> Login de cuenta seguro; true --> Login de cuenta inseguro
 
 Método WS | _return_
 ----------- | ------------
-??? | ???
+ModificarProducto(producto) | 
 AgregarProducto (producto) | null --> Ya existe el producto; idProducto insertado --> Correcta la inserción
 SelectProductoById (id) | 0 --> El producto con determinado "id" no existe; ModeloProducto --> Producto encontrado
 EliminarProducto (producto) | null
-??? | ???
+ListaProducto() | lista productos
 
 Método de Controlador | _return_
 ----------- | ------------

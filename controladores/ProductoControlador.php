@@ -15,31 +15,9 @@
         public function __construct(){}
 
         public function Lista(){
-            if(!$this->start()) {
-                $this->stop();
-                return false;
-            }
 
-            $stmt = $this->pdo->prepare("SELECT * FROM ".$this->tabla);
-            $stmt->execute();
-
-            if($stmt) $this->status = 200;
-            else $this->status = 404;
-
-            $lista = array();
-
-            while($fila = $stmt->fetch(PDO::FETCH_ASSOC)):
-                $producto = new ProductoModelo();
-                $producto->set(
-                    $fila[$this->fields["id"]],
-                    $fila[$this->fields["nombre"]],
-                    $fila[$this->fields["exist"]],
-                    $fila[$this->fields["precio"]]
-                );
-                $lista[] = $producto;
-            endwhile;
+            $lista = $this->soapClient->__soapCall('ListaProducto');  
             
-            $this->stop();
             $this->result = $lista;
         }
 
