@@ -1,6 +1,6 @@
 <?php
     class BaseControlador {
-        protected $wsdl = "http://localhost/WebService/WebService.php?wsdl";
+        protected $wsdl = "http://192.168.60.6/WebService/WebService.php?wsdl";
         protected $soapClient;
 
         protected $availableWSActions;

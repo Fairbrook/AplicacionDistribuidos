@@ -17,10 +17,10 @@
                 endif;
 
                 $usuario = new UsuarioModelo();
-                echo $usuario->username = trim($_POST["usuario"]);
-                echo $usuario->password = hash("sha256", $_POST["password"]);
+                $usuario->username = trim($_POST["usuario"]);
+                $usuario->password = hash("sha256", $_POST["password"]);
 
-                echo $loginRes = $this->soapClient->__soapCall('Ingresar', array('usuario' => $usuario));
+                $loginRes = $this->soapClient->__soapCall('Ingresar', array('usuario' => $usuario));
 
                 if ($loginRes > 0): 
                     $usuario->hash = hash("sha256",(string)mt_rand(10, 1000));
@@ -59,8 +59,8 @@
                 } else if ($registUser == 1) { 
 
                     $_SESSION["usuario"] = $usuario->username;
-                    $_SESSION["hash"] = $usuario->hash;                        
-                   header("Location: producto.php");
+                    $_SESSION["hash"] = $usuario->hash;                      
+                    $this->Ingresar();
 
                 }                        
 

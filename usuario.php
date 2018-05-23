@@ -1,4 +1,5 @@
 <?php
+    ob_flush();
     session_start();
     require_once("requires.php");
 
@@ -24,7 +25,7 @@
     <?php 
 
        require_once($interfaz->render());
-       
+       ob_flush();
     ?>
 </body>
 </html>

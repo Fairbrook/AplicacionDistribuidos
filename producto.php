@@ -1,4 +1,5 @@
 <?php
+    ob_flush();
     session_start();
     require_once("requires.php");
 
@@ -34,7 +35,7 @@
         require_once("./vistas/Compartido/Navbar.php");
         require_once($interfaz->render());
         require_once("./vistas/Compartido/Footer.php");
-       
+       ob_flush();
     ?>
 </body>
 </html>
