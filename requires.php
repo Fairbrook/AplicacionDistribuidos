@@ -1,6 +1,6 @@
 <?php
-    require_once("./database/DBConexion.php");
-    require_once("./database/DBLog.php");
+    //require_once("./database/DBConexion.php");
+    //require_once("./database/DBLog.php");
 
     $modelos = opendir("modelos");
     while ($modelo = readdir($modelos)):

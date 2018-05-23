@@ -4,7 +4,9 @@
 
         public $result = 1;
 
-        public function __construct(){}
+        public function __construct(){
+            parent::__construct();
+        }
 
         public function Ingresar () {
             if($_SERVER["REQUEST_METHOD"]=="POST" && isset($_POST["usuario"]) && isset($_POST["password"])):
@@ -15,10 +17,10 @@
                 endif;
 
                 $usuario = new UsuarioModelo();
-                $usuario->username = trim($_POST["usuario"]);
-                $usuario->password = hash("sha256", $_POST["password"]);
+                echo $usuario->username = trim($_POST["usuario"]);
+                echo $usuario->password = hash("sha256", $_POST["password"]);
 
-                $loginRes = $this->soapClient->__soapCall('Ingresar', array('usuario' => $usuario));
+                echo $loginRes = $this->soapClient->__soapCall('Ingresar', array('usuario' => $usuario));
 
                 if ($loginRes > 0): 
                     $usuario->hash = hash("sha256",(string)mt_rand(10, 1000));
@@ -49,7 +51,7 @@
                 $usuario->password = hash("sha256", $_POST["password"]);
                 $usuario->hash = hash("sha256",(string)mt_rand(10, 1000));
 
-                $registUser = $this->soapClient->__soapCall('RegistrarCuenta', array('usuario' => $usuario));
+                $registUser = $this->soapClient->__soapCall('RegistrarCuenta', array('usuario' => (array)$usuario));
 
                 if ($registUser == 3) {        //Ya existe ese nombre de usuario
                     $this->result = 3;
@@ -58,7 +60,7 @@
 
                     $_SESSION["usuario"] = $usuario->username;
                     $_SESSION["hash"] = $usuario->hash;                        
-                    header("Location: producto.php");
+                   header("Location: producto.php");
 
                 }                        
 

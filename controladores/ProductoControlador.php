@@ -12,11 +12,13 @@
             "precio" => "precio"
         );
 
-        public function __construct(){}
+        public function __construct(){
+            parent::__construct();
+        }
 
         public function Lista(){
 
-            $lista = $this->soapClient->__soapCall('ListaProducto');  
+            $lista = $this->soapClient->__soapCall('ListaProducto',array());  
             
             $this->result = $lista;
         }
@@ -69,7 +71,7 @@
 
             $checkProducto = $this->soapClient->__soapCall('SelectProductoById', array('id' => $idProd));
 
-            if ($checkProducto == 0) {
+            if ($checkProducto->id == null) {
                 $usuario = new UsuarioModelo();
                 $usuario->username = $_SESSION["usuario"];
 
@@ -129,11 +131,12 @@
                     return false;
                 endif;
 
-                $checkProducto = $this->soapClient->__soapCall('SelectProductoById', array('id' => $idProd));
+                $checkProducto = $this->soapClient->__soapCall('SelectProductoById', array('id' => $_GET['id']));
 
-                if($checkProducto == 1):
 
-                    $res = $checkProducto
+                if($checkProducto->id > -1):
+
+                    $res = $checkProducto;
                     $actual = new ProductoModelo();
                     $actual->id = $res->id;
                     $actual->nombre = $res->nombre;
@@ -143,15 +146,14 @@
                     if($actual->id == $_SESSION["producto_id"] && $actual->nombre == $_SESSION["producto_nombre"] && $actual->existencia == $_SESSION["producto_existencia"] && $actual->precio == $_SESSION["producto_precio"]):
                        
 
-                       	$updateProducto = $this->soapClient->__soapCall('ModificarProducto', array('producto' => $producto));
-
+                           $updateProducto = $this->soapClient->__soapCall('ModificarProducto', array('producto' => (array)$producto));
+                           
                         $usuario = new UsuarioModelo();
                         $usuario->username = $_SESSION["usuario"];
 
                         $log = new LoggerControlador();
                         $log->Modificar($usuario, $producto);
 
-                        $this->stop();
                         header("Location: producto.php?c=Producto&a=Lista");
                     else:
                         $usuario = new UsuarioModelo();
@@ -173,16 +175,11 @@
             else:
                 if(isset($_GET["id"])):
 
-                    if(!$this->start()) {
-                        $this->stop();
-                        return false;
-                    }
-
-                    $id = $_GET["id"];
+                    $idProd = $_GET["id"];
 
                     $checkProducto = $this->soapClient->__soapCall('SelectProductoById', array('id' => $idProd));
 
-                    if($checkProducto == 1):
+                    if($checkProducto->id > -1):
                         $this->result = $checkProducto;
                         $_SESSION["producto_id"] = $this->result->id;
                         $_SESSION["producto_nombre"] = $this->result->nombre;
